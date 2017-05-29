@@ -128,11 +128,28 @@ def comes_before(a, b):
 #build a huffman tree from a given list of occurences
 def build_huffman(occurences):
    leaflist = None
-   for i in range(1, 256):
+   for i in range(0, 256):
       if occurences.array[i] != 0:
-         #print ("adding value to linked list")
-         leaflist = insert_sorted(leaflist, Leaf(occurences.array[i], i), comes_before)
-         #print (leaflist)
-   leaflist = reverse(leaflist)
+         print ("adding value to linked list")
+         leaflist = insert_sorted(leaflist, Leaf(i, occurences.array[i]), comes_before)
+         print (leaflist)
+   #leaflist = reverse(leaflist)
    print (leaflist)
+   while leaflist.rest != None :
+      n1 = leaflist.value
+      n2 = leaflist.rest.value
+      leaflist = leaflist.rest.rest
+      i1 = None
+      print (n1.freq)
+      print (n2.freq)
+      if comes_before(n1, n2):
+         i1 = Node(None, n1.freq + n2.freq, n1, n2)
+      else:
+         i1 = Node(None, n1.freq + n2.freq, n1, n2)
+      leaflist = add(leaflist, 0, i1)
+      leaflist = sort(leaflist, comes_before)
+      print ("LEAFLIST" + str(leaflist))
+      #print (length(leaflist))
+      return leaflist
+         
          

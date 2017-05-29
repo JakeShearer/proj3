@@ -228,13 +228,14 @@ def insert_sorted(list, val, comes_before):
       return list
    idx = 0
    #print ("list length: " + str(length(list)))
-   while idx < 100:
+   while idx < length(list):
       if list == None:
          list = add(list, idx, val)
+      #print("grabbing val at index " + str(idx))
       if comes_before(get(list, idx), val):
          #print (idx)
          #print ("value inserted in list")
-         list = add(list, idx + idx, val)
+         list = add(list, length(list), val)
          return list
       else:
          #print ("incrementing idx")
