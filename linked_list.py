@@ -221,7 +221,7 @@ def less_than_artist(song1, song2):
 #insert_sorted list, val, func >> list
 #inserts a value into a sorted list        
 def insert_sorted(list, val, comes_before):
-   #print ("inserting " + str(val) + " in list")
+   print ("inserting " + str(val) + " in list")
    if list == None:
       list = Pair(val, None)
       #print ("added val to front of list")
@@ -232,14 +232,19 @@ def insert_sorted(list, val, comes_before):
       if list == None:
          list = add(list, idx, val)
       #print("grabbing val at index " + str(idx))
-      if comes_before(get(list, idx), val):
+      #print ("adding if " + str(get(list, idx)) + " is greater than " + str(val))
+      if comes_before(val, get(list, idx)):
          #print (idx)
-         #print ("value inserted in list")
+         list = add(list, idx, val)
+         return list
+      print (str(val) + " does not come before " + str(get(list, idx)))
+      if list.rest == None:
          list = add(list, length(list), val)
          return list
       else:
          #print ("incrementing idx")
          idx += 1
+   print ("never added value to list")
    return list
    
 #reverse list --> list
