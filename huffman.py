@@ -147,24 +147,22 @@ def build_huffman(occurences):
    while leaflist.rest != None:
       n1 = leaflist.value
       n2 = leaflist.rest.value
-      print ("n1: " + str(n1))
-      print ("n2: " + str(n2))
+      #print ("n1: " + str(n1))
+      #print ("n2: " + str(n2))
       leaflist = remove(leaflist, 0)[1]
       leaflist = remove(leaflist, 0)[1]
-      print ("leaflist after removing first two vals: " + str(leaflist))
+      #print ("leaflist after removing first two vals: " + str(leaflist))
       i1 = None
       #print (n1.freq)
       #print (n2.freq)
       if comes_before(n1, n2):
          i1 = Node(n2.asciirep, n1.freq + n2.freq, n1, n2)
-         print ("combined node : " + str(i1))
+         #print ("combined node : " + str(i1))
       else:
          i1 = Node(n1.asciirep, n1.freq + n2.freq, n2, n1)
-         print ("combined node : " + str(i1))
+         #print ("combined node : " + str(i1))
       leaflist = insert_sorted(leaflist, i1, comes_before)
-      print ("OUTPUT" + str(leaflist))
+      #print ("OUTPUT" + str(leaflist))
       #print (length(leaflist))
-      if (leaflist == None):
-         print ("leaflist is empty")
-   return out       
+   return leaflist       
          

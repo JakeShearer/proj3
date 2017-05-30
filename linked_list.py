@@ -1,7 +1,6 @@
 import math
 import huffman
 
-
 class Song:
     def __init__(self, songinfo):
         self.fullstring = songinfo
@@ -10,7 +9,6 @@ class Song:
         self.title = splitinfo[0]
         self.artist = splitinfo[1]
         self.album = splitinfo[2]
-
 
 # AnyList is one of
 # None
@@ -221,7 +219,7 @@ def less_than_artist(song1, song2):
 #insert_sorted list, val, func >> list
 #inserts a value into a sorted list        
 def insert_sorted(list, val, comes_before):
-   print ("inserting " + str(val) + " in list")
+   #print ("inserting " + str(val) + " in list")
    if list == None:
       list = Pair(val, None)
       #print ("added val to front of list")
@@ -237,14 +235,14 @@ def insert_sorted(list, val, comes_before):
          #print (idx)
          list = add(list, idx, val)
          return list
-      print (str(val) + " does not come before " + str(get(list, idx)))
       if list.rest == None:
          list = add(list, length(list), val)
          return list
       else:
          #print ("incrementing idx")
          idx += 1
-   print ("never added value to list")
+   #print ("never added value to list")
+   list = add(list, length(list), val)
    return list
    
 #reverse list --> list

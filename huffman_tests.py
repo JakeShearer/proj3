@@ -31,7 +31,7 @@ class TestList(unittest.TestCase):
       #print (huff_tree)
       occ_list = openfile()
       huff_tree2 = build_huffman(occ_list)
-      print(huff_tree2)
+      print (huff_tree2)
       
 
 
