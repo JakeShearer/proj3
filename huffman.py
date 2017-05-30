@@ -6,12 +6,12 @@ import array_list
 #openfile File --> List
 #opens a file and returns the number of character occurences
 #in the file
-def openfile():
+def openfile(filename):
    charlist = empty_list()
    charlist.array = [0] * 256
-   print("Input filename:")
-   filename = sys.stdin.readline().strip()
-   print("opening " + filename)
+   #print("Input filename:")
+   #filename = sys.stdin.readline().strip()
+   #print("opening " + filename)
    f = open(str(filename), "r")
    for line in f:
       for ch in line:
@@ -163,22 +163,21 @@ def build_huffman(occurences):
 
 #huffman_to_ascii huffmanTree >> string  
 #traverse through a huffmanTree and convert it to a binary string
-def huffman_to_binary(huffman, list = empty_list(), str = ""):
-   list.array = [None]
-   #if list != None:
-   #   huff = build_huffman(list)
-   #huff = huffman
+def huffman_to_string(huffman, codes, string = ""):
    if isinstance(huffman, Leaf):
-      print ("hit a leaf")
-      list = array_list.add(list, list.size, str)
-      print (list)
-      return ""
-   if isinstance(huffman, Node):
-      str += (huffman_to_binary(huffman.left, list, str) + "0")
-   if isinstance(huffman, Node):
-      str += (huffman_to_binary(huffman.right, list, str) + "1")
-   return str
+      #print ("hit a leaf")
+      #print (string)
+      codes[huffman.asciirep] = string
+      string = ""
+   else:
+      #print ("moving left")
+      huffman_to_string(huffman.left, codes, string + "0")
+      #print ("moving right")
+      huffman_to_string(huffman.right, codes, string + "1")
+   #print (codes)
+   return codes
 
+   
 def huffman_encode(infile, outfile):
    pass
 
