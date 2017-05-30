@@ -11,17 +11,12 @@ def openfile():
    charlist.array = [0] * 256
    print("Input filename:")
    filename = sys.stdin.readline().strip()
-   # Print it
-   print("Opening " + filename)
-   try:
-      f = open(str(filename), "r")
-      for line in f:
-         for ch in line:
-            temp = ord(ch)
-            charlist.array[temp] += 1               
-   except:
-      print('Wrong file name')
-      openfile()
+   print("opening " + filename)
+   f = open(str(filename), "r")
+   for line in f:
+      for ch in line:
+         temp = ord(ch)
+         charlist.array[temp] += 1               
    #print (charlist)
    return charlist
 
@@ -117,15 +112,13 @@ def comes_before(a, b):
          return False
       if a.freq < b.freq:
          return True
-      if a.freq == b.freq and a.asciirep == None:
-         return True
       else:
-         if a.asciirep == None:
-            return True
+         #if a.asciirep == None:
+         #   return True
          if a.asciirep > b.asciirep:
             return False
-         if a.asciirep > b.asciirep:
-            return True
+         #if a.asciirep > b.asciirep:
+         #   return True
          else:
             return True
 
@@ -159,8 +152,8 @@ def build_huffman(occurences):
       if comes_before(n1, n2):
          i1 = Node(n2.asciirep, n1.freq + n2.freq, n1, n2)
          #print ("combined node : " + str(i1))
-      else:
-         i1 = Node(n1.asciirep, n1.freq + n2.freq, n2, n1)
+      #else:
+      #   i1 = Node(n1.asciirep, n1.freq + n2.freq, n2, n1)
          #print ("combined node : " + str(i1))
       leaflist = insert_sorted(leaflist, i1, comes_before)
       #print ("OUTPUT" + str(leaflist))

@@ -5,7 +5,7 @@ from linked_list import *
 class TestList(unittest.TestCase):
    def test_generate_string(self):
       test_tree = HuffmanTree(Node(64, 10, Node(36, 5, None, None), Node(39, 5, None, None)))
-      #print (generate_string(test_tree))
+      self.assertEqual(generate_string(test_tree), "@@@@@@@@@@$$$$$'''''")
       #print (openfile())
    def test_comes_before(self):
       n1 = Leaf(33, 10)
@@ -29,15 +29,35 @@ class TestList(unittest.TestCase):
       #huff_tree = build_huffman(occ_list)
       #print (generate_string(huff_tree))
       #print (huff_tree)
+      huff_tree = build_huffman(occ_list)
       occ_list = openfile()
       huff_tree2 = build_huffman(occ_list)
-      print (huff_tree2)
+      print ("test with ex1.txt")
+      occ_list = openfile()
+      huff_tree3 = build_huffman(occ_list)
    def test_huffman_to_binary(self):
       occ_list = openfile()
       huff_tree = build_huffman(occ_list)
       #print (type(huff_tree))
       print (huffman_to_binary(huff_tree))
       #should be 11011011000011011010011010011 with ex2
+   def test_eq_repr(self):
+      self.maxDiff = None
+      occ_list = List([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], 0, 0)      
+      huff_tree = build_huffman(occ_list)
+      occ_list = List([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], 0, 0)      
+      huff_tree2 = build_huffman(occ_list)
+      self.assertEqual(huff_tree, huff_tree2)
+      print (huff_tree2)
+      self.assertEqual(repr(huff_tree), repr(huff_tree))
+      huff_tree3 = HuffmanTree(None)
+      print (huff_tree3)
+      self.assertEqual(repr(huff_tree3), "HuffmanTree(None)")
+   def test_huffman_encode(self):
+      a = "in.txt"
+      b = "out.txt"
+      self.assertEqual(huffman_encode(a, b), None)
+      
       
 
 
