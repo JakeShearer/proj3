@@ -32,6 +32,12 @@ class TestList(unittest.TestCase):
       occ_list = openfile()
       huff_tree2 = build_huffman(occ_list)
       print (huff_tree2)
+   def test_huffman_to_binary(self):
+      occ_list = openfile()
+      huff_tree = build_huffman(occ_list)
+      #print (type(huff_tree))
+      print (huffman_to_binary(huff_tree))
+      #should be 11011011000011011010011010011 with ex2
       
 
 

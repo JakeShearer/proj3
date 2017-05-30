@@ -1,6 +1,7 @@
 from array_list import *
 from linked_list import *
 import sys
+import array_list
 
 #openfile File --> List
 #opens a file and returns the number of character occurences
@@ -21,7 +22,7 @@ def openfile():
    except:
       print('Wrong file name')
       openfile()
-   print (charlist)
+   #print (charlist)
    return charlist
 
 #print openfile()
@@ -142,8 +143,8 @@ def build_huffman(occurences):
    #leaflist = reverse(leaflist)
    #print (leaflist)
    out = None
-   print (leaflist)
-   print ("###################################")
+   #print (leaflist)
+   #print ("###################################")
    while leaflist.rest != None:
       n1 = leaflist.value
       n2 = leaflist.rest.value
@@ -164,5 +165,30 @@ def build_huffman(occurences):
       leaflist = insert_sorted(leaflist, i1, comes_before)
       #print ("OUTPUT" + str(leaflist))
       #print (length(leaflist))
-   return leaflist       
+   
+   return get(leaflist, 0)
+
+#huffman_to_ascii huffmanTree >> string  
+#traverse through a huffmanTree and convert it to a binary string
+def huffman_to_binary(huffman, list = empty_list(), str = ""):
+   list.array = [None]
+   #if list != None:
+   #   huff = build_huffman(list)
+   #huff = huffman
+   if isinstance(huffman, Leaf):
+      print ("hit a leaf")
+      list = array_list.add(list, list.size, str)
+      print (list)
+      return ""
+   if isinstance(huffman, Node):
+      str += (huffman_to_binary(huffman.left, list, str) + "0")
+   if isinstance(huffman, Node):
+      str += (huffman_to_binary(huffman.right, list, str) + "1")
+   return str
+
+def huffman_encode(infile, outfile):
+   pass
+
+
+   
          
