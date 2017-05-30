@@ -163,23 +163,31 @@ def build_huffman(occurences):
 
 #huffman_to_ascii huffmanTree >> string  
 #traverse through a huffmanTree and convert it to a binary string
-def huffman_to_string(huffman, codes, string = ""):
+def huffman_to_string(huffman, codes, outstr, string = ""):
    if isinstance(huffman, Leaf):
       #print ("hit a leaf")
       #print (string)
       codes[huffman.asciirep] = string
+      outstr += chr(huffman.asciirep)
       string = ""
    else:
       #print ("moving left")
-      huffman_to_string(huffman.left, codes, string + "0")
+      huffman_to_string(huffman.left, codes, outstr, string + "0")
       #print ("moving right")
-      huffman_to_string(huffman.right, codes, string + "1")
-   #print (codes)
-   return codes
+      huffman_to_string(huffman.right, codes, outstr, string + "1")
+   print (outstr).strip()
+   return codes, outstr
 
    
 def huffman_encode(infile, outfile):
-   pass
+   occurences = openfile(infile)
+   huffman = build_huffman(occurences)
+   codes = [0] * 256
+   outstr = ""
+   out = huffman_to_string(huffman, codes, outstr)[1]
+   print ("****************")
+   #print (out)
+   return out
    
 def huffman_decode(infile, outfile):
    pass
