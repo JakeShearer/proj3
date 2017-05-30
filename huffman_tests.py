@@ -61,6 +61,8 @@ class TestList(unittest.TestCase):
       print(huffman_encode(a, b))
    def test_open(self):
       f = openfile("ex1.txt")
+   def test_huffman_decode(self):
+      self.assertEqual(huffman_decode("a", "b"), None)
       
       
 
