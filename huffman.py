@@ -180,6 +180,9 @@ def huffman_to_string(huffman, codes, string = ""):
    
 def huffman_encode(infile, outfile):
    pass
+   
+def huffman_decode(infile, outfile):
+   pass
 
 
    
