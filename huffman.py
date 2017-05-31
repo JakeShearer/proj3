@@ -226,23 +226,31 @@ def huffman_encode(infile, outfile):
    hb_writer.close()
    return prefix
 
-'''   
-def get_decomp_string(huffman, reader, numleaves):
-   str = ""
-   i = 0
-   while i < numleaves:
-      if isinstance(huffman, Leaf):
-         i += 1
-         return chr(huffman.asciirep)
-      while not isinstance(huffman, Leaf):
-         if reader.read_bit() == True:
-            str += get_decomp_string(huffman.right, reader, numleaves)
-         elif reader.read_bit() == False:
-            str += get_decomp_string(huffman.left, reader, numleaves)
-      print ("building decomped string... " + str)
-   print ("decomped string" + str)
-   return str
 '''
+def get_decomp_string(huffman, list, numleaves, i = 0, listidx = 0, outstring = ""):
+   print (str(numleaves) + " leaves in the tree")
+   print (str(i) + " leaves added to tree so far")
+   print ("current outstring" + outstring)
+   if i == numleaves - 1:
+      return outstring
+   if isinstance(huffman, Leaf):
+      i += 1
+      outstring += chr(huffman.asciirep)
+      print (huffman.asciirep)
+      print (outstring)
+      return outstring
+   else:
+      if list[listidx] == True:
+         print ("moving right")
+         listidx += 1
+         outstring += get_decomp_string(huffman.right, list, numleaves, i, listidx, outstring)
+      if list[listidx] == False:
+         print ("moving left")
+         listidx += 1
+         outstring += get_decomp_string(huffman.left, list, numleaves, i, listidx, outstring)
+ '''  
+   
+   
  
 def huffman_decode(infile, outfile):
    hb_reader = HuffmanBitsReader(infile)
@@ -256,8 +264,18 @@ def huffman_decode(infile, outfile):
       occurences.array[ascii] = freq
       i += 1
    print (occurences)
+   print ("lOOK HERE")
+   tf = [None] * 300
+   for i in range(0, 300):
+      try:
+         tf[i] = hb_reader.read_bit()
+      except:
+         continue
+   print (tf)  
    huff = build_huffman(occurences)
-   #decomp_string = get_decomp_string(huff, hb_reader, numleaves)
+   print (huff)
+   #decomp_string = get_decomp_string(huff, tf, numleaves)
+   #print ("decomp string: " + decomp_string)
    #outf = open(outfile, "wb")
    #outf.write(decomp_string)
    #outf.close()
