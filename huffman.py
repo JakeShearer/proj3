@@ -220,9 +220,7 @@ def huffman_encode(infile, outfile):
          if occurences.array[i] != 0:
             hb_writer.write_byte(i)
             hb_writer.write_int(occurences.array[i])
-      for code in codes:
-         if code != None:
-            hb_writer.write_code(codestr)
+      hb_writer.write_code(codestr.strip())
    hb_writer.close()
    return prefix
    
