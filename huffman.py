@@ -80,7 +80,6 @@ class Node:
     def __repr__(self):
         return ("Node({!r}, {!r}, {!r}, {!r})".format(self.asciirep, self.freq, self.left, self.right))
 
-
 #generate_string HuffmanTree --> String
 #generates a string based on a prefix traversal of a huffman tree
 def generate_string(hufftree):
@@ -176,7 +175,7 @@ def huffman_to_codes(huffman, codes, string = ""):
       huffman_to_codes(huffman.left, codes, string + "0")
       #print ("moving right")
       huffman_to_codes(huffman.right, codes, string + "1")
-   print (codes)
+   #print (codes)
    return codes
 
 def get_prefix(huffman, outstr = ""):
@@ -195,7 +194,8 @@ def huffman_encode(infile, outfile):
    occurences = openfile(infile)
    huffman = build_huffman(occurences)
    prefix = get_prefix(huffman)
-   prefix = prefix[1:]
+   if len(prefix) > 1:
+      prefix = prefix[1:]
    emptylist = [None] * 256
    codes = huffman_to_codes(huffman, emptylist)
    numleaves = 0
@@ -221,12 +221,39 @@ def huffman_encode(infile, outfile):
             hb_writer.write_byte(i)
             hb_writer.write_int(occurences.array[i])
       hb_writer.write_code(codestr.strip())
+   else:
+      hb_writer.write_byte(0)
    hb_writer.close()
    return prefix
    
-   
+def get_decomp_string(reader, numleaves):
+   str = ""
+   i = 0
+   while i < numleaves:
+      if reader.read_bit() == True:
+         str += "1"
+      else:
+         str += "0"
+      i += 1
+   return str
+
+ 
 def huffman_decode(infile, outfile):
-   pass
+   hb_reader = HuffmanBitsReader(infile)
+   occurences = empty_list()
+   occurences.array = [0] * 256
+   numleaves = hb_reader.read_byte()
+   i = 0
+   while i < numleaves:
+      ascii = hb_reader.read_byte()
+      freq = hb_reader.read_int()
+      occurences.array[ascii] = freq
+      i += 1
+   decomp_string = get_decomp_string(hb_reader, numleaves)
+   huff = build_huffman(occurences)      
+   #outf = open(outfile, "wb")
+   #outf.write(decomp_string)
+   #outf.close()
 
 
 #################TEST CASES#################################
@@ -255,20 +282,19 @@ class TestList(unittest.TestCase):
    def test_build_huffman(self):
       occ_list = List([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], 0, 0)      
       huff_tree = build_huffman(occ_list)
-      print (generate_string(huff_tree))
+      #print (generate_string(huff_tree))
       #print (huff_tree)
       huff_tree = build_huffman(occ_list)
       #print ("test with ex1.txt")
       occ_list = List([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 3, 2, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], 0, 0)
       #print (occ_list)
-      huff_tree3 = build_huffman(occ_list)
-      
+      huff_tree3 = build_huffman(occ_list)     
    def test_huffman_to_codes(self):
       codes = [None] * 256
       outlist = empty_list()
       occ_list = List([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 3, 2, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], 0, 0)
       huff_tree = build_huffman(occ_list)
-      print (huff_tree)
+      #print (huff_tree)
       print (huffman_to_codes(huff_tree, codes))
       #should be 11011011000011011010011010011 with ex2
    def test_eq_repr(self):
@@ -277,24 +303,35 @@ class TestList(unittest.TestCase):
       huff_tree = build_huffman(occ_list)
       occ_list = List([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], 0, 0)      
       huff_tree2 = build_huffman(occ_list)
-      print (huff_tree2)
+      #print (huff_tree2)
       self.assertEqual(repr(huff_tree), repr(huff_tree))
       huff_tree3 = HuffmanTree(None)
-      print (huff_tree3)
+      #print (huff_tree3)
       self.assertEqual(repr(huff_tree3), "HuffmanTree(None)")
    def test_huffman_encode(self):
       a = "file0.txt"
       b = "file0_encoded_test.bin"
-      huffman_encode(a, b)     
+      huffman_encode(a, b)    
+      a = "test_alpha.txt" 
+      b = "alpha_out.bin"
+      huffman_encode(a, b)
+      huffman_encode("ex.txt", "ex_out.bin")
    def test_empty(self):
-      huffman_encode("file_blank.txt", "out1.txt")
+      huffman_encode("file_blank.txt", "bile_blank.bin")
    def test_open(self):
       f = openfile("ex1.txt")
    def test_huffman_decode(self):
-      self.assertEqual(huffman_decode("a", "b"), None)
+      print ("xxxxxxxxxxxxxxxx DECODE TESTS xxxxxxxxxxxxxxxxxx")
+      sidetestlist = openfile("ex.txt")
+      print (sidetestlist)
+      sidetesthuff = build_huffman(sidetestlist)
+      print (sidetesthuff)
+      print (generate_string(sidetesthuff))
+      self.assertEqual(huffman_decode("ex_out.bin", "ex_out.txt"), None)
    def test_01_textfile(self):
-      s = huffman_encode("textfile.txt", "textfile_encoded.bin")
-      self.assertEqual(s, "acb")
+      pass
+      #s = huffman_encode("textfile.txt", "textfile_encoded.bin")
+      #self.assertEqual(s, "acb")
       # capture errors by running 'diff' on your encoded file
       # with a *known* solution file
       #err = os.system("diff textfile_encoded.bin textfile_encoded_soln.bin")

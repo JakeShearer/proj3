@@ -224,6 +224,11 @@ def insert_sorted(list, val, comes_before):
       list = Pair(val, None)
       #print ("added val to front of list")
       return list
+   if comes_before(val, list.value):
+      return Pair(val, list)
+   else:
+      return Pair(list.value, insert_sorted(list.rest, val, comes_before))
+   '''
    idx = 0
    #print ("list length: " + str(length(list)))
    while idx < length(list):
@@ -243,6 +248,7 @@ def insert_sorted(list, val, comes_before):
          idx += 1
    #print ("never added value to list")
    list = add(list, length(list), val)
+   '''
    return list
    
 #reverse list --> list
