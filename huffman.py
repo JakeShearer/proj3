@@ -182,7 +182,7 @@ def get_prefix(huffman, outstr = ""):
    if huffman == None:
       return ""
    if isinstance(huffman, Leaf):
-      print ("adding " + chr(huffman.asciirep))
+      #print ("adding " + chr(huffman.asciirep))
       return chr(huffman.asciirep)
    if huffman.left != None:
       outstr += get_prefix(huffman.left, outstr)
@@ -225,18 +225,24 @@ def huffman_encode(infile, outfile):
       hb_writer.write_byte(0)
    hb_writer.close()
    return prefix
-   
-def get_decomp_string(reader, numleaves):
+
+'''   
+def get_decomp_string(huffman, reader, numleaves):
    str = ""
    i = 0
    while i < numleaves:
-      if reader.read_bit() == True:
-         str += "1"
-      else:
-         str += "0"
-      i += 1
+      if isinstance(huffman, Leaf):
+         i += 1
+         return chr(huffman.asciirep)
+      while not isinstance(huffman, Leaf):
+         if reader.read_bit() == True:
+            str += get_decomp_string(huffman.right, reader, numleaves)
+         elif reader.read_bit() == False:
+            str += get_decomp_string(huffman.left, reader, numleaves)
+      print ("building decomped string... " + str)
+   print ("decomped string" + str)
    return str
-
+'''
  
 def huffman_decode(infile, outfile):
    hb_reader = HuffmanBitsReader(infile)
@@ -249,8 +255,9 @@ def huffman_decode(infile, outfile):
       freq = hb_reader.read_int()
       occurences.array[ascii] = freq
       i += 1
-   decomp_string = get_decomp_string(hb_reader, numleaves)
-   huff = build_huffman(occurences)      
+   print (occurences)
+   huff = build_huffman(occurences)
+   #decomp_string = get_decomp_string(huff, hb_reader, numleaves)
    #outf = open(outfile, "wb")
    #outf.write(decomp_string)
    #outf.close()
@@ -322,11 +329,10 @@ class TestList(unittest.TestCase):
       f = openfile("ex1.txt")
    def test_huffman_decode(self):
       print ("xxxxxxxxxxxxxxxx DECODE TESTS xxxxxxxxxxxxxxxxxx")
-      sidetestlist = openfile("ex.txt")
-      print (sidetestlist)
-      sidetesthuff = build_huffman(sidetestlist)
-      print (sidetesthuff)
-      print (generate_string(sidetesthuff))
+      #sidetestlist = openfile("ex.txt")
+      #print (sidetestlist)
+      #sidetesthuff = build_huffman(sidetestlist)
+      #print (sidetesthuff)
       self.assertEqual(huffman_decode("ex_out.bin", "ex_out.txt"), None)
    def test_01_textfile(self):
       pass
