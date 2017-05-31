@@ -3,6 +3,8 @@ from array_list import *
 from linked_list import *
 import sys
 import array_list
+from huffman_bits_io import *
+import os
 
 #openfile File --> List
 #opens a file and returns the number of character occurences
@@ -177,19 +179,43 @@ def huffman_to_codes(huffman, codes, string = ""):
    print (codes)
    return codes
 
+def get_prefix(huffman, outstr = ""):
+   if huffman == None:
+      return ""
+   if isinstance(huffman, Leaf):
+      print ("adding " + chr(huffman.asciirep))
+      return chr(huffman.asciirep)
+   if huffman.left != None:
+      outstr += get_prefix(huffman.left, outstr)
+   if huffman.right != None:
+      outstr += get_prefix(huffman.right, outstr)
+   return outstr
+      
+
    
 def huffman_encode(infile, outfile):
    occurences = openfile(infile)
    huffman = build_huffman(occurences)
-   emptylist = [0] * 256
+   prefix = get_prefix(huffman)
+   prefix = prefix[1:]
+   emptylist = [None] * 256
    codes = huffman_to_codes(huffman, emptylist)
    print ("****************")
    codestr = ""
    intext = open(infile, "r")
+   print ("the infix tree representation is: " + prefix)
    for line in intext:
       for ch in line:
          codestr += codes[ord(ch)]
-   return codestr
+   hb_writer = HuffmanBitsWriter(outfile)
+   if codes != None:
+      for code in codes:
+         if code != None:
+            print ("writing " + str(code) + "to file")
+            for integer in str(code):
+               hb_writer.write_code(code)
+   hb_writer.close()
+   return prefix
    
    
 def huffman_decode(infile, outfile):
@@ -250,14 +276,23 @@ class TestList(unittest.TestCase):
       print (huff_tree3)
       self.assertEqual(repr(huff_tree3), "HuffmanTree(None)")
    def test_huffman_encode(self):
-      a = "ex.txt"
+      a = "file_blank.txt"
       b = "out1.txt"
-      self.assertEqual(huffman_encode(a, b), "11011011000011011010011010011")
-      huffman_encode("file_blank.txt", "file_blank_encoded.bin")
+      #huffman_encode(a, b), "11011011000011011010011010011"
+      #huffman_encode("file_blank.txt", "file_blank_encoded.bin")
+   def test_empty(self):
+      huffman_encode("file_blank.txt", "out1.txt")
    def test_open(self):
       f = openfile("ex1.txt")
    def test_huffman_decode(self):
       self.assertEqual(huffman_decode("a", "b"), None)
+   def test_01_textfile(self):
+      s = huffman_encode("textfile.txt", "textfile_encoded.bin")
+      self.assertEqual(s, "acb")
+      # capture errors by running 'diff' on your encoded file
+      # with a *known* solution file
+      #err = os.system("diff textfile_encoded.bin textfile_encoded_soln.bin")
+      #self.assertEqual(err, 0)
       
       
 
