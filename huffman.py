@@ -190,9 +190,7 @@ def get_prefix(huffman, outstr = ""):
    if huffman.right != None:
       outstr += get_prefix(huffman.right, outstr)
    return outstr
-      
-
-   
+  
 def huffman_encode(infile, outfile):
    occurences = openfile(infile)
    huffman = build_huffman(occurences)
@@ -213,6 +211,7 @@ def huffman_encode(infile, outfile):
       for ch in line:
          codestr += codes[ord(ch)]
    codestr += "000"
+   print (codestr)
    hb_writer = HuffmanBitsWriter(outfile)
    if codes != None:
       print (str(numleaves) + " leaves in the tree")
@@ -286,10 +285,9 @@ class TestList(unittest.TestCase):
       print (huff_tree3)
       self.assertEqual(repr(huff_tree3), "HuffmanTree(None)")
    def test_huffman_encode(self):
-      a = "file_blank.txt"
-      b = "out1.txt"
-      #huffman_encode(a, b), "11011011000011011010011010011"
-      #huffman_encode("file_blank.txt", "file_blank_encoded.bin")
+      a = "file0.txt"
+      b = "file0_encoded_test.bin"
+      huffman_encode(a, b)     
    def test_empty(self):
       huffman_encode("file_blank.txt", "out1.txt")
    def test_open(self):
