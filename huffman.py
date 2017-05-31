@@ -200,6 +200,11 @@ def huffman_encode(infile, outfile):
    prefix = prefix[1:]
    emptylist = [None] * 256
    codes = huffman_to_codes(huffman, emptylist)
+   numleaves = 0
+   if codes != None:
+      for code in codes:
+         if code != None:
+            numleaves += 1
    print ("****************")
    codestr = ""
    intext = open(infile, "r")
@@ -207,13 +212,18 @@ def huffman_encode(infile, outfile):
    for line in intext:
       for ch in line:
          codestr += codes[ord(ch)]
+   codestr += "000"
    hb_writer = HuffmanBitsWriter(outfile)
    if codes != None:
+      print (str(numleaves) + " leaves in the tree")
+      hb_writer.write_byte(numleaves)
+      for i in range(0, 255):
+         if occurences.array[i] != 0:
+            hb_writer.write_byte(i)
+            hb_writer.write_int(occurences.array[i])
       for code in codes:
          if code != None:
-            print ("writing " + str(code) + "to file")
-            for integer in str(code):
-               hb_writer.write_code(code)
+            hb_writer.write_code(codestr)
    hb_writer.close()
    return prefix
    
