@@ -240,8 +240,8 @@ def huffman_decode(infile, outfile):
       i += 1
    print (occurences)
    print ("lOOK HERE")
-   tf = [None] * 300
-   for i in range(0, 300):
+   tf = [None] * 5000
+   for i in range(0, 5000):
       try:
          tf[i] = hb_reader.read_bit()
       except:
