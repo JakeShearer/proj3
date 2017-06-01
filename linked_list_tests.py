@@ -47,7 +47,7 @@ class TestList(unittest.TestCase):
       temp_list = Pair("this", Pair("is", Pair("a", None)))
       self.assertEqual(repr(temp_list), "'this', 'is', 'a', None")
    def test_interface(self):
-      temp_list = empty_list()
+      temp_list = make_empty()
       self.assertEqual(temp_list, None)
       temp_list = add(temp_list, 0, "Hello!")
       self.assertEqual(temp_list, Pair("Hello!", None))
@@ -58,7 +58,7 @@ class TestList(unittest.TestCase):
       temp_list = set(temp_list, 0, "Bye!")
       self.assertEqual(get(temp_list, 0), "Bye!")
    def test_remove_help(self):
-      temp_list = empty_list()
+      temp_list = make_empty()
       self.assertRaises(IndexError, remove_help, temp_list, -1)
       self.assertRaises(IndexError, remove_help, None, 8)
    def test_foreach(self):
@@ -67,13 +67,6 @@ class TestList(unittest.TestCase):
       temp_list = Pair(1, Pair(2, Pair(3, Pair(4, Pair(5, None)))))
       temp_list = foreach(temp_list, math.factorial)
       self.assertEqual(foreach(temp_list, math.factorial), None)
-   def test_sort(self):
-      empty_list = None
-      self.assertEqual(sort(empty_list), None)
-      temp_list = Pair(1, Pair(2, Pair(4, Pair(3, Pair(5, None)))))
-      print (sort(temp_list))
-      temp_list = sort(temp_list)
-      self.assertEqual(temp_list, Pair(1, Pair(2, Pair(3, Pair(4, Pair(5, None))))))
 
 if __name__ == '__main__':
     unittest.main()

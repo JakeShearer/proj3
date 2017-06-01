@@ -225,31 +225,6 @@ def huffman_encode(infile, outfile):
       hb_writer.write_byte(0)
    hb_writer.close()
    return prefix
-
-'''
-def get_decomp_string(huffman, list, numleaves, i = 0, listidx = 0, outstring = ""):
-   print (str(numleaves) + " leaves in the tree")
-   print (str(i) + " leaves added to tree so far")
-   print ("current outstring" + outstring)
-   if i == numleaves - 1:
-      return outstring
-   if isinstance(huffman, Leaf):
-      i += 1
-      outstring += chr(huffman.asciirep)
-      print (huffman.asciirep)
-      print (outstring)
-      return outstring
-   else:
-      if list[listidx] == True:
-         print ("moving right")
-         listidx += 1
-         outstring += get_decomp_string(huffman.right, list, numleaves, i, listidx, outstring)
-      if list[listidx] == False:
-         print ("moving left")
-         listidx += 1
-         outstring += get_decomp_string(huffman.left, list, numleaves, i, listidx, outstring)
- '''  
-   
    
  
 def huffman_decode(infile, outfile):
@@ -272,14 +247,45 @@ def huffman_decode(infile, outfile):
       except:
          continue
    print (tf)  
+   outstr = ""
    huff = build_huffman(occurences)
    print (huff)
-   #decomp_string = get_decomp_string(huff, tf, numleaves)
-   #print ("decomp string: " + decomp_string)
-   #outf = open(outfile, "wb")
-   #outf.write(decomp_string)
-   #outf.close()
-
+   num_chars = huff.freq
+   char_cnt = 0
+   list_cnt = 0
+   huffman_change = huff
+   while char_cnt < num_chars:
+      while isinstance(huffman_change, Node):
+         print (huffman_change.__class__)
+         if tf[list_cnt] == True:            
+            try:
+               huffman_change = huffman_change.right
+            except:
+               break
+            print ('moving right')
+            list_cnt += 1
+         if tf[list_cnt] == False:
+            try:
+               huffman_change = huffman_change.left
+            except:
+               break
+            print ('moving left')
+            list_cnt += 1
+         print (huffman_change)
+      outstr += chr(huffman_change.asciirep)
+      print (outstr)
+      char_cnt += 1
+      print (str(char_cnt) + "/" + str(num_chars) + " added to list")
+      huffman_change = huff
+   out_file = open(outfile, "w")
+   out_file.write(outstr)
+   out_file.close()
+            
+   '''
+   print ("writing " + str(num_chars) + " characters to output file")
+   print (huff)
+   get_decomp_string(outfile, huff, tf, numleaves, outfile)
+   '''
 
 #################TEST CASES#################################
 class TestList(unittest.TestCase):
@@ -343,6 +349,7 @@ class TestList(unittest.TestCase):
       huffman_encode("ex.txt", "ex_out.bin")
    def test_empty(self):
       huffman_encode("file_blank.txt", "bile_blank.bin")
+      huffman_encode("lipsum_in.txt", "lipsum_out.bin")
    def test_open(self):
       f = openfile("ex1.txt")
    def test_huffman_decode(self):
@@ -352,6 +359,7 @@ class TestList(unittest.TestCase):
       #sidetesthuff = build_huffman(sidetestlist)
       #print (sidetesthuff)
       self.assertEqual(huffman_decode("ex_out.bin", "ex_out.txt"), None)
+      huffman_decode("lipsum_out.bin", "lipsum_out.txt")
    def test_01_textfile(self):
       pass
       #s = huffman_encode("textfile.txt", "textfile_encoded.bin")
