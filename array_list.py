@@ -1,103 +1,83 @@
-# a List represents an array, a size, and a capacity
-class List:
-    def __init__(self, array, size, capacity):
-        self.array = array # an array (a python built-in list)
-        self.size = size # a number
-        self.capacity = capacity # a number
+import unittest
 
-    def __eq__(self, other):
-        return (type(other) == List
-                and self.array == other.array
-                and self.size == other.size
-                and self.capacity == other.capacity
-                )
+# represents a list implemented as an array
+class ArrayList():
+    def __init__(self, array, len):
+        self.array = array
+        self.len = len
 
     def __repr__(self):
-        return "List({!r}, {!r}, {!r})".format(self.array, self.size, self.capacity)
-    
-# => List
-# returns an empty list
-def empty_list():
-    return List([], 0, 0)
+        return "ArrayList(%r, %r)" % (self.array, self.len)
 
-# List int value => List
-# adds a value to an List at a certain index
-def add(list, index, value):
-    if index < 0 or index > length(list):
+    def __eq__(self, other):
+        return ((type(other) == ArrayList)
+        and (self.array == other.array)
+        and (self.len == other.len)
+        )
+
+    def __ne__(self, other):
+        return (not (other == self))
+
+# the initial size of an ArrayList
+init_size = 5
+
+# the amount by which the size of an ArrayList is multiplied
+size_incr_factor = 2
+
+# create a new empty ArrayList
+def make_empty():
+    return ArrayList([None] * init_size, 0)
+
+# return the length of an ArrayList
+def length(arr):
+    return arr.len
+
+# add an element to the end of an ArrayList
+def add_to_end(arr,new_elt):
+    maybe_extend_array(arr)
+    arr.array[arr.len] = new_elt
+    arr.len += 1
+    return arr
+
+# extend an ArrayLen's length if necessary
+def maybe_extend_array(arr):
+    if (len(arr.array) == arr.len):
+        new_array = ([None] * (round(arr.len * size_incr_factor)))
+        for i in range(0, arr.len):
+            new_array[i] = arr.array[i]
+        arr.array = new_array
+    return None
+
+# insert an element at a particular index in an array
+def add(arr,index,new_elt):
+    if ((index > arr.len) or (index < 0)):
         raise IndexError
-    else:
-        if list.capacity == 0:
-            return List([value], 1, 1)
-        else:
-            if list.size == list.capacity:
-                new_array = [None] * (2 * list.capacity)
-                for i in range(list.capacity):
-                    new_array[i] = list.array[i]
-                new_array = add_element(List(new_array, list.size, 2*list.capacity), index, value)
-                return List(new_array, list.size + 1, list.capacity * 2)
-            else:
-                new_array = add_element(list, index, value)
-                return List(new_array, list.size+1, list.capacity)
+    maybe_extend_array(arr)
+    arr.len += 1
+    for x in range(arr.len,index,-1):
+        arr.array[x] = arr.array[x-1]
+    arr.array[index] = new_elt
+    return arr
 
-# List int value => array
-# adds a value to an array
-def add_element(list,index,value):
-    new_array = [None] * list.capacity
-    for i in range(list.capacity):
-        new_array[i] = list.array[i]
-    temp = value
-    for i in range(index, list.size+1):
-        nexttemp = new_array[i]
-        new_array[i] = temp
-        temp = nexttemp
-    return new_array
-
-# List => int
-# determines the length of a List
-def length(list):
-    return list.size
-
-# List int => value
-# determines the item at a certain spot in the list
-def get(list, index):
-    if index < 0 or index >= length(list):
+# get the element at the specified index in an array
+def get(arr,index):
+    if ((index >= arr.len) or (index < 0)):
         raise IndexError
-    return list.array[index]
+    return arr.array[index]
 
-# List int value => List
-# replaces the value at a specified index with a given value
-def set(list, index, value):
-    if index < 0 or index >= length(list):
+def set(arr,index,new_elt):
+    if ((index >= arr.len) or (index < 0)):
         raise IndexError
-    new_array = [None] * list.capacity
-    for i in range(list.capacity):
-        new_array[i] = list.array[i]
-    new_array[index] = value
-    return List(new_array, list.size, list.capacity)
+    arr.array[index]=new_elt
+    return arr
 
-# List int => List
-# removes an element from a list and returns a tuple with the removed element and the resulting list
-def remove(list, index):
-    if index < 0 or index >= length(list):
+def remove(arr,index):
+    if ((index >= arr.len) or (index < 0)):
         raise IndexError
-    else:
-        new_array = [None] * list.capacity
-        for i in range(list.capacity):
-            new_array[i] = list.array[i]
-        element = get(list, index)
-        new_array = remove_element(list, index)
-        return element, List(new_array, list.size-1, list.capacity)
-
-# List int => array
-# removes an element at a given index in an array and returns the resulting array
-def remove_element(list,index):
-    new_array = [None] * list.capacity
-    for i in range(list.capacity):
-        new_array[i] = list.array[i]
-    for i in range(index, list.size):
-        if i == list.size-1:
-            new_array[i] = None
-        else:
-            new_array[i] = new_array[i+1]
-    return new_array
-
+    arr.len -= 1
+    # nb: must now be at least one extra element
+    for x in range(index,arr.len):
+        arr.array[x] = arr.array[x+1]
+    # not necessary, but tidier:
+    arr.array[arr.len] = None
+    return arr
