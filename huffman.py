@@ -258,10 +258,11 @@ def huffman_decode(infile, outfile):
       while isinstance(huffman_change, Node):
          print (huffman_change.__class__)
          if tf[list_cnt] == True:            
-            try:
-               huffman_change = huffman_change.right
+            huffman_change = huffman_change.right
+            '''
             except:
                break
+            '''
             print ('moving right')
             list_cnt += 1
          if tf[list_cnt] == False:
