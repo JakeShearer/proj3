@@ -225,6 +225,7 @@ def huffman_encode(infile, outfile):
             hb_writer.write_int(occurences.array[i])
       hb_writer.write_code(codestr.strip())
    else:
+      print ("adding an extra 00 because the file is blank")
       hb_writer.write_byte(0)
    hb_writer.close()
    intext.close()
@@ -369,6 +370,7 @@ class TestList(unittest.TestCase):
       a = "test_alpha.txt" 
       b = "alpha_out.bin"
       huffman_encode(a, b)
+      huffman_encode("file_blank.txt", "file_blank_encoded.bin")
       huffman_encode("ex.txt", "ex_out.bin")
    def test_empty(self):
       huffman_encode("file_blank.txt", "bile_blank.bin")
@@ -384,14 +386,6 @@ class TestList(unittest.TestCase):
       self.assertEqual(huffman_decode("ex_out.bin", "ex_out.txt"), None)
       huffman_decode("lipsum_out.bin", "lipsum_out.txt")
       self.assertTrue(filecmp.cmp("lipsum_in.txt", "lipsum_out.txt"))
-   def test_01_textfile(self):
-      pass
-      #s = huffman_encode("textfile.txt", "textfile_encoded.bin")
-      #self.assertEqual(s, "acb")
-      # capture errors by running 'diff' on your encoded file
-      # with a *known* solution file
-      #err = os.system("diff textfile_encoded.bin textfile_encoded_soln.bin")
-      #self.assertEqual(err, 0)
       
       
 
