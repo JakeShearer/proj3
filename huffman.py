@@ -181,6 +181,8 @@ def huffman_to_codes(huffman, codes, string = ""):
    #print (codes)
    return codes
 
+#get_prefix huffmantree >> string
+#generate the prefix representation of all of the leaves in a huffman tree
 def get_prefix(huffman, outstr = ""):
    if huffman == None:
       return ""
@@ -192,7 +194,9 @@ def get_prefix(huffman, outstr = ""):
    if huffman.right != None:
       outstr += get_prefix(huffman.right)
    return outstr
-  
+
+#huffman_encode infile outfile >> string
+#reads a .txt file, encodes, writes it to a .bin and returns the prefix string  
 def huffman_encode(infile, outfile):
    occurences = openfile(infile)
    huffman = build_huffman(occurences)
@@ -231,7 +235,10 @@ def huffman_encode(infile, outfile):
    intext.close()
    print ("PREFIX " + prefix)
    return prefix
-    
+
+#huffman_decode infile outfile >> None
+#decodes a .bin file into a huffman tree, writes the resulting 
+#tree to a .txt file
 def huffman_decode(infile, outfile):
    hb_reader = HuffmanBitsReader(infile)
    freq_array = [0] * 256
