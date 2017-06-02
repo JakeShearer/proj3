@@ -1,6 +1,7 @@
 import unittest
 from array_list import *
 from linked_list import *
+import linked_list
 import sys
 import array_list
 from huffman_bits_io import *
@@ -229,9 +230,31 @@ def huffman_encode(infile, outfile):
     
 def huffman_decode(infile, outfile):
    hb_reader = HuffmanBitsReader(infile)
+   freq_array = [0] * 256
    occurences = array_list.make_empty()
-   occurences.array = [0] * 256
+   occurences.array = freq_array
+   total = 0
    numleaves = hb_reader.read_byte()
+   out = open(outfile, "w")
+   for i in range(numleaves):
+      value = hb_reader.read_byte()
+      freq = hb_reader.read_int()
+      total += freq
+      freq_array[value] = freq# = array_list.set(freq_array, value, freq)
+   for i in range(total):
+      htree = build_huffman(occurences)
+      while not isinstance(htree, Leaf):
+         v = hb_reader.read_bit()
+         if v:
+            htree = htree.right
+         else:
+            htree = htree.left
+      out.write(chr(htree.asciirep))
+   out.close()
+   hb_reader.close()
+      
+      
+   '''
    i = 0
    while i < numleaves:
       ascii = hb_reader.read_byte()
@@ -239,9 +262,9 @@ def huffman_decode(infile, outfile):
       occurences.array[ascii] = freq
       i += 1
    print (occurences)
-   print ("lOOK HERE")
-   tf = [None] * 5000
-   for i in range(0, 5000):
+   #print ("lOOK HERE")
+   tf = [None] * 1000
+   for i in range(0, 1000):
       try:
          tf[i] = hb_reader.read_bit()
       except:
@@ -259,10 +282,8 @@ def huffman_decode(infile, outfile):
          print (huffman_change.__class__)
          if tf[list_cnt] == True:            
             huffman_change = huffman_change.right
-            '''
             except:
                break
-            '''
             print ('moving right')
             list_cnt += 1
          if tf[list_cnt] == False:
@@ -280,9 +301,7 @@ def huffman_decode(infile, outfile):
       huffman_change = huff
    out_file = open(outfile, "w")
    out_file.write(outstr)
-   out_file.close()
-            
-   '''
+   out_file.close()               
    print ("writing " + str(num_chars) + " characters to output file")
    print (huff)
    get_decomp_string(outfile, huff, tf, numleaves, outfile)
