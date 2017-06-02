@@ -188,9 +188,9 @@ def get_prefix(huffman, outstr = ""):
       #print ("adding " + chr(huffman.asciirep))
       return chr(huffman.asciirep)
    if huffman.left != None:
-      outstr += get_prefix(huffman.left, outstr)
+      outstr += get_prefix(huffman.left)
    if huffman.right != None:
-      outstr += get_prefix(huffman.right, outstr)
+      outstr += get_prefix(huffman.right)
    return outstr
   
 def huffman_encode(infile, outfile):

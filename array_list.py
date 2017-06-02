@@ -42,7 +42,7 @@ def add_to_end(arr,new_elt):
 # extend an ArrayLen's length if necessary
 def maybe_extend_array(arr):
     if (len(arr.array) == arr.len):
-        new_array = ([None] * (round(arr.len * size_incr_factor)))
+        new_array = ([None] * (arr.len * size_incr_factor))
         for i in range(0, arr.len):
             new_array[i] = arr.array[i]
         arr.array = new_array
