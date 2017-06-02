@@ -365,15 +365,14 @@ class TestList(unittest.TestCase):
    def test_huffman_encode(self):
       a = "file0.txt"
       b = "file0_encoded_test.bin"
-      #huffman_encode(a, b)    
+      huffman_encode(a, b)    
       a = "test_alpha.txt" 
       b = "alpha_out.bin"
-      #huffman_encode(a, b)
-      #huffman_encode("ex.txt", "ex_out.bin")
+      huffman_encode(a, b)
+      huffman_encode("ex.txt", "ex_out.bin")
    def test_empty(self):
-      pass
-      #huffman_encode("file_blank.txt", "bile_blank.bin")
-      #huffman_encode("lipsum_in.txt", "lipsum_out.bin")
+      huffman_encode("file_blank.txt", "bile_blank.bin")
+      huffman_encode("lipsum_in.txt", "lipsum_out.bin")
    def test_open(self):
       f = openfile("ex1.txt")
    def test_huffman_decode(self):
