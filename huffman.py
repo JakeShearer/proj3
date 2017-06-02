@@ -189,10 +189,13 @@ def get_prefix(huffman, outstr = ""):
    if isinstance(huffman, Leaf):
       #print ("adding " + chr(huffman.asciirep))
       return chr(huffman.asciirep)
+   outstr = get_prefix(huffman.left) + get_prefix(huffman.right)
+   '''
    if huffman.left != None:
       outstr += get_prefix(huffman.left)
    if huffman.right != None:
       outstr += get_prefix(huffman.right)
+   '''
    return outstr
 
 #huffman_encode infile outfile >> string
@@ -233,7 +236,6 @@ def huffman_encode(infile, outfile):
       hb_writer.write_byte(0)
    hb_writer.close()
    intext.close()
-   print ("PREFIX " + prefix)
    return prefix
 
 #huffman_decode infile outfile >> None
@@ -374,15 +376,19 @@ class TestList(unittest.TestCase):
    def test_huffman_encode(self):
       a = "file0.txt"
       b = "file0_encoded_test.bin"
-      huffman_encode(a, b)    
+      print ("\nfile0 prefix ")
+      print ("\n" + huffman_encode(a, b))   
       a = "test_alpha.txt" 
       b = "alpha_out.bin"
-      huffman_encode(a, b)
-      huffman_encode("file_blank.txt", "file_blank_encoded.bin")
-      huffman_encode("ex.txt", "ex_out.bin")
+      print ("\nalphabet prefix ")
+      print ("\n" + huffman_encode(a, b))
+      print (huffman_encode("file_blank.txt", "file_blank_encoded.bin"))
+      print (huffman_encode("ex.txt", "ex_out.bin"))
+      print ("\npunctuation prefix ")
+      print ("\n" + huffman_encode("punctuation.txt", "punctuation_out.bin"))
    def test_empty(self):
-      huffman_encode("file_blank.txt", "bile_blank.bin")
-      huffman_encode("lipsum_in.txt", "lipsum_out.bin")
+      #print (huffman_encode("file_blank.txt", "bile_blank.bin"))
+      print (huffman_encode("lipsum_in.txt", "lipsum_out.bin"))
    def test_open(self):
       f = openfile("ex1.txt")
    def test_huffman_decode(self):
