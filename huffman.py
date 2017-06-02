@@ -191,15 +191,14 @@ def get_prefix(huffman, outstr = ""):
       outstr += get_prefix(huffman.left)
    if huffman.right != None:
       outstr += get_prefix(huffman.right)
-   print ("OUTSTR " + outstr)
    return outstr
   
 def huffman_encode(infile, outfile):
    occurences = openfile(infile)
    huffman = build_huffman(occurences)
    prefix = get_prefix(huffman)
-   if len(prefix) > 1:
-      prefix = prefix[1:]
+   #if len(prefix) > 1:
+      #prefix = prefix[1:]
    emptylist = [None] * 256
    codes = huffman_to_codes(huffman, emptylist)
    numleaves = 0
@@ -230,6 +229,7 @@ def huffman_encode(infile, outfile):
       hb_writer.write_byte(0)
    hb_writer.close()
    intext.close()
+   print ("PREFIX " + prefix)
    return prefix
     
 def huffman_decode(infile, outfile):
