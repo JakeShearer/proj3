@@ -191,6 +191,7 @@ def get_prefix(huffman, outstr = ""):
       outstr += get_prefix(huffman.left)
    if huffman.right != None:
       outstr += get_prefix(huffman.right)
+   print ("OUTSTR " + outstr)
    return outstr
   
 def huffman_encode(infile, outfile):
