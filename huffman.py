@@ -23,6 +23,7 @@ def openfile(filename):
          temp = ord(ch)
          charlist.array[temp] += 1               
    #print (charlist)
+   f.close()
    return charlist
 
 #print openfile()
@@ -205,18 +206,18 @@ def huffman_encode(infile, outfile):
       for code in codes:
          if code != None:
             numleaves += 1
-   print ("****************")
+   #print ("****************")
    codestr = ""
    intext = open(infile, "r")
-   print ("the infix tree representation is: " + prefix)
+   #print ("the infix tree representation is: " + prefix)
    for line in intext:
       for ch in line:
          codestr += codes[ord(ch)]
-   codestr += "000"
-   print (codestr)
+   #codestr += "000"
+   #print (codestr)
    hb_writer = HuffmanBitsWriter(outfile)
    if codes != None:
-      print (str(numleaves) + " leaves in the tree")
+      #print (str(numleaves) + " leaves in the tree")
       hb_writer.write_byte(numleaves)
       for i in range(0, 255):
          if occurences.array[i] != 0:
@@ -226,6 +227,7 @@ def huffman_encode(infile, outfile):
    else:
       hb_writer.write_byte(0)
    hb_writer.close()
+   intext.close()
    return prefix
     
 def huffman_decode(infile, outfile):
@@ -241,8 +243,9 @@ def huffman_decode(infile, outfile):
       freq = hb_reader.read_int()
       total += freq
       freq_array[value] = freq# = array_list.set(freq_array, value, freq)
+   huff = build_huffman(occurences)
    for i in range(total):
-      htree = build_huffman(occurences)
+      htree = huff
       while not isinstance(htree, Leaf):
          v = hb_reader.read_bit()
          if v:
@@ -346,7 +349,7 @@ class TestList(unittest.TestCase):
       occ_list = ArrayList([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 3, 2, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], 256)
       huff_tree = build_huffman(occ_list)
       #print (huff_tree)
-      print (huffman_to_codes(huff_tree, codes))
+      #print (huffman_to_codes(huff_tree, codes))
       #should be 11011011000011011010011010011 with ex2
    def test_eq_repr(self):
       self.maxDiff = None
@@ -362,18 +365,19 @@ class TestList(unittest.TestCase):
    def test_huffman_encode(self):
       a = "file0.txt"
       b = "file0_encoded_test.bin"
-      huffman_encode(a, b)    
+      #huffman_encode(a, b)    
       a = "test_alpha.txt" 
       b = "alpha_out.bin"
-      huffman_encode(a, b)
-      huffman_encode("ex.txt", "ex_out.bin")
+      #huffman_encode(a, b)
+      #huffman_encode("ex.txt", "ex_out.bin")
    def test_empty(self):
-      huffman_encode("file_blank.txt", "bile_blank.bin")
-      huffman_encode("lipsum_in.txt", "lipsum_out.bin")
+      pass
+      #huffman_encode("file_blank.txt", "bile_blank.bin")
+      #huffman_encode("lipsum_in.txt", "lipsum_out.bin")
    def test_open(self):
       f = openfile("ex1.txt")
    def test_huffman_decode(self):
-      print ("xxxxxxxxxxxxxxxx DECODE TESTS xxxxxxxxxxxxxxxxxx")
+      #print ("xxxxxxxxxxxxxxxx DECODE TESTS xxxxxxxxxxxxxxxxxx")
       #sidetestlist = openfile("ex.txt")
       #print (sidetestlist)
       #sidetesthuff = build_huffman(sidetestlist)
