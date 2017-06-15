@@ -1,3 +1,5 @@
+[![Coverage Status](https://coveralls.io/repos/github/JakeShearer/proj3/badge.svg?branch=master)](https://coveralls.io/github/JakeShearer/proj3?branch=master)
+
 ### CSC 202 Assignment 3
 Huffman Coding
 
